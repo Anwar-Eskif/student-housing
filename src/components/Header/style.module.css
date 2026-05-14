@@ -1,0 +1,74 @@
+/* .styleLink {
+    cursor: pointer;
+    font-weight: 400;
+    padding: 3.5px 25px;
+    position: relative;
+    display: block;
+    text-decoration: none !important;
+    text-transform: uppercase;
+    transition: color 0.5s ease;
+}
+.styleLink:hover {
+    color: #0f766e;
+}
+
+.styleLink:before,
+.styleLink:after {
+    position: absolute;
+    width: 30px;
+    height: 2px;
+    background: #0f766e;
+    content: '';
+    opacity: 0.6;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+    pointer-events: none;
+}
+
+.styleLink:before {
+    top: 0;
+    left: 0;
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    transform: rotate(90deg);
+    -webkit-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    transform-origin: 0 0;
+}
+
+.styleLink:after {
+    right: 0;
+    bottom: 0;
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    transform: rotate(90deg);
+    -webkit-transform-origin: 100% 0;
+    -moz-transform-origin: 100% 0;
+    transform-origin: 100% 0;
+}
+
+.styleLink:hover:before,
+.styleLink:hover:after,
+.styleLink:focus:before,
+.styleLink:focus:after {
+    opacity: 1;
+
+    background-color: #fff;
+}
+
+.styleLink:hover:before,
+.styleLink:focus:before {
+    left: 50%;
+    -webkit-transform: rotate(0deg) translateX(-50%);
+    -moz-transform: rotate(0deg) translateX(-50%);
+    transform: rotate(0deg) translateX(-50%);
+}
+
+.styleLink:hover:after,
+.styleLink:focus:after {
+    right: 50%;
+    -webkit-transform: rotate(0deg) translateX(50%);
+    -moz-transform: rotate(0deg) translateX(50%);
+    transform: rotate(0deg) translateX(50%);
+} */
