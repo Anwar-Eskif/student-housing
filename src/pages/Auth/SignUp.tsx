@@ -27,6 +27,7 @@ const SignUp = ({ toggle, isVisible }: Props) => {
   const { login } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSuccess = (data: response) => {
     login(data.token)
@@ -66,6 +67,10 @@ const SignUp = ({ toggle, isVisible }: Props) => {
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
@@ -148,9 +153,6 @@ const SignUp = ({ toggle, isVisible }: Props) => {
             className=" w-full py-3 px-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-[#4EA685] outline-none text-right"
             {...formik.getFieldProps('password')}
           />
-          {formik.touched.password && formik.errors.password && (
-            <span className="text-red-500 text-xs mt-1 block">{formik.errors.password}</span>
-          )}
           <span
             className=" absolute top-1/2 left-3 transform -translate-y-1/2 cursor-pointer"
             onClick={handleShowPassword}
@@ -162,19 +164,32 @@ const SignUp = ({ toggle, isVisible }: Props) => {
             )}
           </span>
         </div>
+        {formik.touched.password && formik.errors.password && (
+          <span className="text-red-500 text-xs block">{formik.errors.password}</span>
+        )}
 
         {/* Confirm Password */}
-        <div>
+        <div className='relative'>
           <input
-            type="password"
+            type={showConfirmPassword ? 'text' : 'password'}
             placeholder={AUTH_TEXT.confirm_password}
             className="w-full py-3 px-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-[#4EA685] outline-none text-right"
             {...formik.getFieldProps('confirmPassword')}
           />
-          {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-            <span className="text-red-500 text-xs mt-1 block">{formik.errors.confirmPassword}</span>
-          )}
+          <span
+            className=" absolute top-1/2 left-3 transform -translate-y-1/2 cursor-pointer"
+            onClick={handleShowConfirmPassword}
+          >
+            {showConfirmPassword ? (
+              <Eye size={24} color="#4EA685" />
+            ) : (
+              <EyeOff size={24} color="#4EA685" />
+            )}
+          </span>
         </div>
+        {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+          <span className="text-red-500 text-xs block">{formik.errors.confirmPassword}</span>
+        )}
 
         <button
           type="submit"

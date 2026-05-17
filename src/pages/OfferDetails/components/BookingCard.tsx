@@ -8,7 +8,7 @@ interface BookingCardProps {
 }
 
 const BookingCard = ({ onBooking }: BookingCardProps) => {
-    const { user } = useAuth()
+  const { user } = useAuth()
   return (
     <div className="bg-white rounded-3xl border border-slate-100 p-8 shadow-2xl shadow-primary/5 flex flex-col gap-6">
       <div className="flex items-baseline justify-between">
@@ -29,7 +29,7 @@ const BookingCard = ({ onBooking }: BookingCardProps) => {
           {BOOKING_CARD_TEXT.request_to_book}
         </button>
         <p className="text-center text-sm text-slate-400 font-medium">
-          {user ? BOOKING_CARD_TEXT.no_charge_now : BOOKING_CARD_TEXT.register_first }
+          {user ? BOOKING_CARD_TEXT.no_charge_now : BOOKING_CARD_TEXT.register_first}
         </p>
       </div>
       <div className="flex flex-col gap-4 pt-6 border-t border-slate-50">

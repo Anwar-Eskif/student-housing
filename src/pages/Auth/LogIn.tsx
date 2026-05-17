@@ -13,6 +13,8 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 // data
 import { ERROR_MESSAGES, AUTH_TEXT } from '../../data/data';
+import { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 
 interface Props {
   toggle: () => void;
@@ -22,12 +24,17 @@ interface Props {
 const LogIn = ({ toggle, isVisible }: Props) => {
   const navigate = useNavigate();
   const { login: loginContext } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
   
   const handleSuccess = (data: response) => {
     // This updates localStorage AND the React State inside AuthProvider
     loginContext(data.token);
     navigate('/');
   }
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const { mutate, isPending } = useMutation({
     mutationFn: login,
@@ -83,20 +90,27 @@ const LogIn = ({ toggle, isVisible }: Props) => {
         </div>
 
         {/* Password Input */}
-        <div className="relative">
+        <div className='relative'>
           <input
-            name="password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             placeholder={AUTH_TEXT.password}
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            className="w-full py-3 px-4 bg-gray-100 rounded-lg border-2 border-white focus:border-[#4EA685] outline-none transition-colors text-right"
+            className=" w-full py-3 px-4 bg-gray-100 rounded-lg border-2 border-transparent focus:border-[#4EA685] outline-none text-right"
+            {...formik.getFieldProps('password')}
           />
-          {formik.touched.password && formik.errors.password && (
-            <span className="text-red-500 text-xs mt-1 block">{formik.errors.password}</span>
-          )}
+          <span
+            className=" absolute top-1/2 left-3 transform -translate-y-1/2 cursor-pointer"
+            onClick={handleShowPassword}
+          >
+            {showPassword ? (
+              <Eye size={24} color="#4EA685" />
+            ) : (
+              <EyeOff size={24} color="#4EA685" />
+            )}
+          </span>
         </div>
+        {formik.touched.password && formik.errors.password && (
+          <span className="text-red-500 text-xs block">{formik.errors.password}</span>
+        )}
 
         {/* Submit Button */}
         <button
