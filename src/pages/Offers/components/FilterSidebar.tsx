@@ -92,6 +92,30 @@ const FilterSidebar = () => {
                             <span>{FILTER_SIDEBAR_TEXT.parking}</span>
 
                         </label>
+                        <label className="flex items-center justify-start gap-2 text-sm text-slate-600 cursor-pointer">
+                            <input
+                                className="rounded text-primary focus:ring-primary"
+                                type="checkbox"
+                            />
+                            <span>{FILTER_SIDEBAR_TEXT.air_conditioner}</span>
+
+                        </label>
+                        <label className="flex items-center justify-start gap-2 text-sm text-slate-600 cursor-pointer">
+                            <input
+                                className="rounded text-primary focus:ring-primary"
+                                type="checkbox"
+                            />
+                            <span>{FILTER_SIDEBAR_TEXT.gym}</span>
+
+                        </label>
+                        <label className="flex items-center justify-start gap-2 text-sm text-slate-600 cursor-pointer">
+                            <input
+                                className="rounded text-primary focus:ring-primary"
+                                type="checkbox"
+                            />
+                            <span>{FILTER_SIDEBAR_TEXT.kitchen}</span>
+
+                        </label>
                     </div>
                 </div>
 

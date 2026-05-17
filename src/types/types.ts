@@ -12,12 +12,18 @@ export interface response {
 }
 
 export interface Offer {
-  id: string;
+  id: number;
+  landlord_id: number;
   title: string;
+  description: string;
+  price: string;
   location: string;
-  price: number;
+  rooms_count: number;
+  amenities: string[];
   status: "active" | "inactive";
-  imageUrl: string;
+  created_at: string;
+  cover_image: string | null;
+  pending_bookings: number;
 }
 
 export interface HomeCardProps {

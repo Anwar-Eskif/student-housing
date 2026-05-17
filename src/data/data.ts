@@ -96,7 +96,10 @@ const FILTER_SIDEBAR_TEXT = {
     amenities: 'المرافق',
     wifi: 'واي فاي',
     laundry: 'غسيل ملابس',
+    air_conditioner: 'تكييف',
     parking: 'مواقف سيارات',
+    gym: 'صالة رياضية',
+    kitchen: 'يحتوي على مطبخ',
     apply_filters: 'تطبيق الفلاتر'
 };
 

@@ -6,6 +6,7 @@ type OfferCardProps = {
 };
 
 const OfferCard = ({ offer }: OfferCardProps) => {
+  const baseUrl = import.meta.env.VITE_BASE_IMG_URL
   const statusVariant = offer.status === "active" ? "bg-primary text-white" : "bg-red-300 text-on-surface-variant";
   return (
     <div className="bg-surface-container-lowest rounded-2xl  overflow-hidden shadow-md hover:shadow-lg transition-shadow group flex flex-col">
@@ -13,7 +14,7 @@ const OfferCard = ({ offer }: OfferCardProps) => {
         <img
           alt={offer.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          src={offer.imageUrl}
+          src={offer.cover_image ? `${baseUrl}/${offer.cover_image}` : "https://via.placeholder.com/400x300?text=No+Image"}
         />
         <div className={`absolute top-4 right-4  text-xs font-bold px-3 py-1 rounded-full shadow-sm ${statusVariant}`}>
           {offer.status === "active" ? "نشط" : "غير نشط"}
@@ -29,7 +30,7 @@ const OfferCard = ({ offer }: OfferCardProps) => {
         </div>
         <div className="flex justify-between items-end mt-auto pt-4 border-t border-gray-200">
           <span className="font-bold text-primary text-xl">
-            {offer.price.toLocaleString()} <span className="text-sm font-normal text-on-surface-variant">دولار / شهر</span>
+            {offer.price} <span className="text-sm font-normal text-on-surface-variant">دولار / شهر</span>
           </span>
           <div className="flex gap-2">
             <button className="text-on-surface-variant hover:text-primary-container rounded-full hover:bg-surface-container">

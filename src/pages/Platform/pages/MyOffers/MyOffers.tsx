@@ -1,12 +1,29 @@
 import { Link } from "react-router-dom";
-import { offers } from "./mock";
 import OfferCard from "./OfferCard";
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getlandLordOffers } from "../../../../services/api";
+import { Offer } from "../../../../types/types";
 
 const MyOffers = () => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["landlord-offers"],
+    queryFn: getlandLordOffers,
+  });
+
+  const offers = data?.offers || [];
+
   const totalOffers = offers.length;
-  const activeOffers = offers.filter(offer => offer.status === 'active').length;
+  const activeOffers = offers.filter((offer: Offer) => offer.status === 'active').length;
   const rentedOffers = totalOffers - activeOffers;
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error fetching offers</div>;
+  }
 
   return (
     <main className="flex-1 p-6 md:p-8 overflow-y-auto">
@@ -40,12 +57,12 @@ const MyOffers = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {offers.map((offer) => (
+          {offers.map((offer: Offer) => (
             <OfferCard key={offer.id} offer={offer} />
           ))}
         </div>
 
-        <div className="flex justify-end mt-4">
+        {/* <div className="flex justify-end mt-4">
           <div className="flex items-center gap-2">
             <button disabled>
               <ChevronRight />
@@ -57,7 +74,7 @@ const MyOffers = () => {
               <ChevronLeft />
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </main>
   );

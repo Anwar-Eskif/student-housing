@@ -32,3 +32,17 @@ export const getUserDetails = async () : Promise<any> => {
   const response = await api.get('/auth/user')
   return response.data;
 }
+
+export const getlandLordOffers = async () : Promise<any> => {
+  const response = await api.get('/offers/landlord/my-offers')
+  return response.data;
+}
+
+export const addNewOffer = async (offerData: FormData) : Promise<any> => {
+  const response = await api.post('/offers/create', offerData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data;
+}

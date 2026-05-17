@@ -1,4 +1,4 @@
-import { MoveLeft, MoveRight, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { OFFERS_DATA, OFFERS_PAGE_TEXT } from "../../data/data";
 import FilterSidebar from "./components/FilterSidebar";
 import OfferCard from "./components/OfferCard";
@@ -41,7 +41,7 @@ const Offers = () => {
           ))}
         </div>
         {/* Pagination */}
-        <div className="flex justify-start items-center mt-8" dir="ltr">
+        {/* <div className="flex justify-start items-center mt-8" dir="ltr">
           <nav className="flex items-center gap-2">
             <button className="p-2 rounded-md hover:bg-surface-container">
               <span className="material-symbols-outlined">
@@ -59,7 +59,7 @@ const Offers = () => {
               </span>
             </button>
           </nav>
-        </div>
+        </div> */}
       </main>
     </div>
   );
