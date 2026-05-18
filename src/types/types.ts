@@ -1,13 +1,14 @@
 export interface User {
-  name: string,
-  email: string,
-  password: string,
-  role: string
+  id?: number;
+  name: string;
+  email: string;
+  password?: string;
+  role: "landlord" | "student";
 }
 
 export interface response {
-  message : string,
-  token: string,
+  message : string;
+  token: string;
   data: any
 }
 
@@ -22,8 +23,10 @@ export interface Offer {
   amenities: string[];
   status: "active" | "inactive";
   created_at: string;
-  cover_image: string | null;
-  pending_bookings: number;
+  landlord_name: string;
+  cover_image: string;
+  avg_rating: number | null;
+  reviews_count: number;
 }
 
 export interface HomeCardProps {

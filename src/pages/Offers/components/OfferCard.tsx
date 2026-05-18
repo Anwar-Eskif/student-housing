@@ -1,33 +1,23 @@
-import { Star } from "lucide-react";
+import { Map, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { OFFER_CARD_TEXT } from "../../../data/data";
-
-interface Tag {
-  label: string;
-};
-
-interface OfferCardProps  {
-  imageUrl: string;
-  price: number;
-  title: string;
-  rating: number;
-  tags: Tag[];
-  isFavorite?: boolean;
-};
+import { Offer } from "../../../types/types";
 
 const OfferCard = ({
-  imageUrl,
+  cover_image,
   price,
   title,
-  rating,
-  tags,
-}: OfferCardProps) => {
+  avg_rating,
+  amenities,
+  location
+}: Offer) => {
+  const baseUrl = import.meta.env.VITE_BASE_IMG_URL;
   return (
     <div className="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
       <div className="relative h-48 overflow-hidden">
         <img
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          src={imageUrl}
+          src={cover_image ? `${baseUrl}/${cover_image}` : ""}
           alt={title}
         />
         <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-primary font-bold text-sm">
@@ -49,18 +39,25 @@ const OfferCard = ({
       <div className="p-5 text-right">
         <div className="flex justify-between items-center  mb-2">
           <h3 className="font-bold text-lg ">{title}</h3>
-          <div className="flex items-center gap-1 text-tertiary">
-            <span className="text-sm font-bold text-orange-300">{rating}</span>
+          <div className="flex items-center gap-1">
+            <span className="text-sm font-bold text-orange-300">{avg_rating?.toFixed(1) || "N/A"}</span>
             <Star size={16} className="fill-current text-orange-300" />
           </div>
         </div>
+        <div className="w-full">
+          {/* locations with icon */}
+          <div className="flex items-center gap-2 text-sm text-slate-500 mb-3">
+              <Map size={16} className="text-slate-400" />
+              <span>{location}</span>
+          </div>
+        </div>
         <div className="flex gap-2  mb-4 overflow-x-auto no-scrollbar">
-          {tags.map((tag) => (
+          {amenities.map((amenity) => (
             <span
-              key={tag.label}
+              key={amenity}
               className="bg-primary/60 text-white text-[10px] px-3 py-2 rounded-full whitespace-nowrap"
             >
-              {tag.label}
+              {amenity}
             </span>
           ))}
         </div>

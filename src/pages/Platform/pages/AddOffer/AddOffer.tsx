@@ -208,7 +208,7 @@ const AddOffer = () => {
                   htmlFor="price"
                   className="block text-sm font-medium text-gray-700 mb-1"
                 >
-                  السعر الشهري (ريال / شهر)
+                  السعر الشهري (دولار / شهر)
                 </label>
                 <div className="relative">
                   <input

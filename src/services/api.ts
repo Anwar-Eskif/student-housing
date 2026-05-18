@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { stringify } from 'qs';
 // type
 import { User } from '../types/types';
 
@@ -37,6 +38,16 @@ export const getlandLordOffers = async () : Promise<any> => {
   const response = await api.get('/offers/landlord/my-offers')
   return response.data;
 }
+
+export const getOffers = async (filters: any): Promise<any> => {
+  const response = await api.get('/offers', {
+    params: filters,
+    paramsSerializer: params => {
+      return stringify(params, { arrayFormat: 'repeat' })
+    }
+  });
+  return response.data;
+};
 
 export const addNewOffer = async (offerData: FormData) : Promise<any> => {
   const response = await api.post('/offers/create', offerData, {

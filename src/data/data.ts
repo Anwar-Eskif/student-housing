@@ -93,11 +93,15 @@ const FILTER_SIDEBAR_TEXT = {
     price: 'السعر',
     max_price: 'الأعلى',
     min_price: 'الأدنى',
-    amenities: 'المرافق',
-    wifi: 'واي فاي',
-    laundry: 'غسيل ملابس',
-    air_conditioner: 'تكييف',
-    parking: 'مواقف سيارات',
+    amenities_label: 'المرفقات',
+    amenities: {
+        wifi: 'واي فاي',
+        laundry: 'غسيل ملابس',
+        air_conditioner: 'تكييف',
+        parking: 'مواقف سيارات',
+        gym: 'صالة رياضية',
+        kitchen: 'يحتوي على مطبخ'
+    },
     gym: 'صالة رياضية',
     kitchen: 'يحتوي على مطبخ',
     apply_filters: 'تطبيق الفلاتر'
@@ -106,7 +110,7 @@ const FILTER_SIDEBAR_TEXT = {
 const OFFERS_PAGE_TEXT = {
     search_results: 'نتائج البحث',
     property: 'عقار',
-    search_placeholder: 'بحث...',
+    search_placeholder: 'ابحث عن مكان',
     sort_by: 'ترتيب حسب:',
     latest: 'الأحدث',
     price_low_to_high: 'السعر: من الأقل للأعلى',
