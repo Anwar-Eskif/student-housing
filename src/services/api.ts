@@ -57,3 +57,8 @@ export const addNewOffer = async (offerData: FormData) : Promise<any> => {
   });
   return response.data;
 }
+
+export const deleteOffer = async (offerId: number) : Promise<any> => {
+  const response = await api.delete(`/offers/delete/${offerId}`);
+  return response.data;
+}

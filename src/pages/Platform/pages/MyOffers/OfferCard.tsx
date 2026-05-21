@@ -3,11 +3,15 @@ import { FilePenLine, MapPin, Trash2 } from "lucide-react";
 
 type OfferCardProps = {
   offer: Offer;
+  onDelete: (id: number) => void;
 };
 
-const OfferCard = ({ offer }: OfferCardProps) => {
-  const baseUrl = import.meta.env.VITE_BASE_IMG_URL
-  const statusVariant = offer.status === "active" ? "bg-primary text-white" : "bg-red-300 text-on-surface-variant";
+const OfferCard = ({ offer, onDelete }: OfferCardProps) => {
+  const baseUrl = import.meta.env.VITE_BASE_IMG_URL;
+  const statusVariant =
+    offer.status === "active"
+      ? "bg-primary text-white"
+      : "bg-red-300 text-on-surface-variant";
   return (
     <div className="bg-surface-container-lowest rounded-2xl  overflow-hidden shadow-md hover:shadow-lg transition-shadow group flex flex-col">
       <div className="relative h-48 overflow-hidden">
@@ -30,14 +34,20 @@ const OfferCard = ({ offer }: OfferCardProps) => {
         </div>
         <div className="flex justify-between items-end mt-auto pt-4 border-t border-gray-200">
           <span className="font-bold text-primary text-xl">
-            {offer.price} <span className="text-sm font-normal text-on-surface-variant">دولار / شهر</span>
+            {offer.price}{" "}
+            <span className="text-sm font-normal text-on-surface-variant">
+              دولار / شهر
+            </span>
           </span>
           <div className="flex gap-2">
             <button className="text-on-surface-variant hover:text-primary-container rounded-full hover:bg-surface-container">
-              <FilePenLine size={20} />
+              <FilePenLine className="text-primary" size={20} />
             </button>
-            <button className="text-on-surface-variant hover:text-error rounded-full hover:bg-error-container">
-              <Trash2 size={20} />
+            <button
+              onClick={() => onDelete(offer.id)}
+              className="text-on-surface-variant hover:text-error rounded-full hover:bg-error-container"
+            >
+              <Trash2 className="text-red-500" size={20} />
             </button>
           </div>
         </div>
