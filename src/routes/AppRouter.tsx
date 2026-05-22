@@ -12,7 +12,7 @@ import OfferImagesPage from "../pages/OfferDetails/OfferImagesPage";
 import Layout from "../pages/Platform/Layout/Layout";
 import BookingRequests from "../pages/Platform/pages/BookingRequests/BookingRequests";
 import MyOffers from "../pages/Platform/pages/MyOffers/MyOffers";
-import OfferUpdate from "../pages/Platform/pages/OfferUpdate/OfferUpdate";
+import UpdateOffer from "../pages/Platform/pages/UpdateOffer/UpdateOffer";
 import AddOffer from "../pages/Platform/pages/AddOffer/AddOffer";
 
 const router = createBrowserRouter([
@@ -63,8 +63,8 @@ const router = createBrowserRouter([
                 element: <AddOffer />
             },
             {
-                path: '/platform/offer-update/:id',
-                element: <OfferUpdate />
+                path: '/platform/update-offer/:offerId',
+                element: <UpdateOffer />
             },
         ]
     },

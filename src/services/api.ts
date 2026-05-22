@@ -62,3 +62,17 @@ export const deleteOffer = async (offerId: number) : Promise<any> => {
   const response = await api.delete(`/offers/delete/${offerId}`);
   return response.data;
 }
+
+export const getOfferDetails = async (offerId: number) : Promise<any> => {
+  const response = await api.get(`/offers/${offerId}`);
+  return response.data;
+}
+
+export const updateOffer = async (offerId: number, offerData: FormData) : Promise<any> => {
+  const response = await api.put(`/offers/update/${offerId}`, offerData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data;
+}
