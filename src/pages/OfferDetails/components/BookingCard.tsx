@@ -5,15 +5,17 @@ import { useAuth } from "../../../context/AuthContext";
 
 interface BookingCardProps {
   onBooking: () => void;
+  roomCount?: number;
+  price?: string | number;
 }
 
-const BookingCard = ({ onBooking }: BookingCardProps) => {
+const BookingCard = ({price , roomCount , onBooking }: BookingCardProps) => {
   const { user } = useAuth()
   return (
     <div className="bg-white rounded-3xl border border-slate-100 p-8 shadow-2xl shadow-primary/5 flex flex-col gap-6">
       <div className="flex items-baseline justify-between">
         <div className="flex items-baseline gap-1">
-          <span className="text-4xl font-black text-slate-900">3,400$</span>
+          <span className="text-4xl font-black text-slate-900">{price?.toLocaleString()}$</span>
           <span className="text-slate-500 font-bold">{BOOKING_CARD_TEXT.monthly}</span>
         </div>
       </div>
@@ -34,8 +36,8 @@ const BookingCard = ({ onBooking }: BookingCardProps) => {
       </div>
       <div className="flex flex-col gap-4 pt-6 border-t border-slate-50">
         <div className="flex justify-between text-slate-600 font-medium">
-          <span>{BOOKING_CARD_TEXT.rent} (4 غرف)</span>
-          <span className="text-slate-900 font-bold">3,400$</span>
+          <span>{BOOKING_CARD_TEXT.rent} ({roomCount} غرف)</span>
+          <span className="text-slate-900 font-bold">{price?.toLocaleString()}$</span>
         </div>
       </div>
     </div>

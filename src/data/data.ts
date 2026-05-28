@@ -75,7 +75,8 @@ const OFFER_DETAILS_TEXT = {
     about: 'عن هذا المسكن',
     amenities: 'ما يقدمه هذا المكان',
     user_reviews: 'تقييمات المستخدمين',
-    add_review : 'أضف تقييمك'
+    add_review : 'أضف تقييمك',
+    no_reviews:"لا توجد تقييمات بعد"
 };
 
 const REVIEW_POPUP_TEXT = {

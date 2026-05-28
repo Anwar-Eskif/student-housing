@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { stringify } from 'qs';
 // type
-import { User } from '../types/types';
+import { Offer, User } from '../types/types';
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -49,6 +49,11 @@ export const getOffers = async (filters: any): Promise<any> => {
   return response.data;
 };
 
+export const getLatestOffers = async (): Promise<any> => {
+  const response = await api.get('/offers/latest');
+  return response.data;
+};
+
 export const addNewOffer = async (offerData: FormData) : Promise<any> => {
   const response = await api.post('/offers/create', offerData, {
     headers: {
@@ -63,7 +68,7 @@ export const deleteOffer = async (offerId: number) : Promise<any> => {
   return response.data;
 }
 
-export const getOfferDetails = async (offerId: number) : Promise<any> => {
+export const getOfferDetails = async (offerId: number) : Promise<{offer: Offer}> => {
   const response = await api.get(`/offers/${offerId}`);
   return response.data;
 }

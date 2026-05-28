@@ -24,17 +24,27 @@ export interface Offer {
   status: "active" | "inactive";
   created_at: string;
   landlord_name: string;
+  landlord_email?: string;
   cover_image: string;
   avg_rating: number | null;
   reviews_count: number;
+  images?: string[],
+  reviews?: []
 }
 
 export interface HomeCardProps {
-    imageSrc: string;
-    price: string;
-    rating: string;
-    title: string;
-    features: {
-        text: string;
-    }[];
+  id: number;
+  landlord_id: number;
+  title: string;
+  description: string;
+  price: string;
+  location: string;
+  rooms_count: number;
+  amenities: string[];
+  status: "active" | "inactive";
+  created_at: string;
+  landlord_name: string;
+  cover_image: string;
+  avg_rating: number | null;
+  reviews_count: number,
 }

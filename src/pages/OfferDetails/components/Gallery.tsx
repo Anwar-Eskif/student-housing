@@ -13,6 +13,7 @@ const Gallery = ({ images }: GalleryProps) => {
 
   const visibleImages = images.slice(0, 5);
   const remainingImages = images.length - visibleImages.length;
+  const baseUrl = import.meta.env.VITE_BASE_IMG_URL;
 
   return (
     <div
@@ -21,23 +22,23 @@ const Gallery = ({ images }: GalleryProps) => {
     >
       <div
         className="col-span-2 row-span-2 bg-center bg-no-repeat bg-cover hover:brightness-95 transition-all"
-        style={{ backgroundImage: `url("${images[0]}")` }}
+        style={{ backgroundImage: `url("${baseUrl}/${images[0]}")` }}
       ></div>
       <div
         className="col-span-1 row-span-1 bg-center bg-no-repeat bg-cover hover:brightness-95 transition-all"
-        style={{ backgroundImage: `url("${images[1]}")` }}
+        style={{ backgroundImage: `url("${baseUrl}/${images[1]}")` }}
       ></div>
       <div
         className="col-span-1 row-span-1 bg-center bg-no-repeat bg-cover hover:brightness-95 transition-all"
-        style={{ backgroundImage: `url("${images[2]}")` }}
+        style={{ backgroundImage: `url("${baseUrl}/${images[2]}")` }}
       ></div>
       <div
         className="col-span-1 row-span-1 bg-center bg-no-repeat bg-cover hover:brightness-95 transition-all"
-        style={{ backgroundImage: `url("${images[3]}")` }}
+        style={{ backgroundImage: `url("${baseUrl}/${images[3]}")` }}
       ></div>
       <div
         className="col-span-1 row-span-1 bg-center bg-no-repeat bg-cover hover:brightness-95 transition-all relative"
-        style={{ backgroundImage: `url("${images[4]}")` }}
+        style={{ backgroundImage: `url("${baseUrl}/${images[4]}")` }}
       >
         {images.length > 5 && (
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[2px]">

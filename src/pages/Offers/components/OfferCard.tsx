@@ -9,11 +9,12 @@ const OfferCard = ({
   title,
   avg_rating,
   amenities,
-  location
+  location,
+  id
 }: Offer) => {
   const baseUrl = import.meta.env.VITE_BASE_IMG_URL;
   return (
-    <div className="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
+    <div className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
       <div className="relative h-48 overflow-hidden">
         <img
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -40,7 +41,7 @@ const OfferCard = ({
         <div className="flex justify-between items-center  mb-2">
           <h3 className="font-bold text-lg ">{title}</h3>
           <div className="flex items-center gap-1">
-            <span className="text-sm font-bold text-orange-300">{avg_rating?.toFixed(1) || "N/A"}</span>
+            <span className="text-sm font-bold text-orange-300">{avg_rating?.toFixed(1) || 0}</span>
             <Star size={16} className="fill-current text-orange-300" />
           </div>
         </div>
@@ -62,7 +63,9 @@ const OfferCard = ({
           ))}
         </div>
         <button className="w-full bg-primary text-white  rounded-lg font-medium hover:brightness-110 transition-all cursor-pointer">
-            <Link className="block h-full w-full py-2.5" to="/offers/1">{OFFER_CARD_TEXT.view_details}</Link>
+            <Link className="block h-full w-full py-2.5" to={`/offers/${id}`}>
+              {OFFER_CARD_TEXT.view_details}
+            </Link>
         </button>
       </div>
     </div>

@@ -15,8 +15,8 @@ const OfferCard = ({ offer, onDelete }: OfferCardProps) => {
       ? "bg-primary text-white"
       : "bg-red-300 text-on-surface-variant";
   return (
-    <div onClick={() => navigate(`/platform/update-offer/${offer.id}`)} className="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-md hover:shadow-lg hover:cursor-pointer transition-shadow group flex flex-col">
-      <div className="relative h-48 overflow-hidden">
+    <div  className="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow group flex flex-col">
+      <div onClick={() => navigate(`/platform/update-offer/${offer.id}`)} className="relative h-48 overflow-hidden hover:cursor-pointer ">
         <img
           alt={offer.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

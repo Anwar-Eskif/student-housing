@@ -6,17 +6,32 @@ import BookingCard from "./components/BookingCard";
 import LandlordProfileCard from "./components/LandlordProfileCard";
 import BookingConfirmationPopup from "./components/BookingConfirmationPopup";
 import ReviewPopup from "./components/ReviewPopup";
+import OfferDetailsSkeleton from "./components/OfferDetailsSkeleton";
 // Icons
 import { Check, Map, Star, StarIcon } from "lucide-react";
 // Data
-import { OFFER_DETAILS_DATA, OFFER_DETAILS_TEXT } from "../../data/data";
+import { OFFER_DETAILS_TEXT } from "../../data/data";
 // context
 import { useAuth } from "../../context/AuthContext";
+// api
+import { getOfferDetails } from "../../services/api";
+// react-query
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
 const OfferDetails = () => {
-  const { user,isLoading } = useAuth()
+  const { id } = useParams();
+  const { user,isLoading: isAuthLoading } = useAuth()
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isReviewPopupOpen, setIsReviewPopupOpen] = useState(false);
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["offer", id],
+    queryKeyHashFn: ([key, id]) => `${key}-${id}`,
+    queryFn: () => getOfferDetails(Number(id)),
+  });
+
+  const offer = data?.offer;
 
   const handleBooking = () => {
     setIsPopupOpen(true);
@@ -33,6 +48,15 @@ const OfferDetails = () => {
   const handleCloseReviewPopup = () => {
     setIsReviewPopupOpen(false);
   };
+
+  if (isLoading) {
+    return <OfferDetailsSkeleton />;
+  }
+
+  if (isError || !offer) {
+    return <div>Offer not found</div>;
+  }
+
   return (
     <main className="px-6 md:px-12 py-8 flex flex-1 justify-center pt-[30px] md:pt-[130px]" dir="rtl">
       <div className="layout-content-container flex flex-col max-w-[1200px] flex-1">
@@ -40,19 +64,19 @@ const OfferDetails = () => {
         <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
           <div className="flex flex-col gap-2">
             <h1 className="text-slate-900 text-3xl md:text-4xl font-extrabold leading-tight tracking-tight">
-              {OFFER_DETAILS_DATA.title}
+              {offer.title}
             </h1>
             <div className="flex items-center gap-3 text-slate-500 text-base font-medium">
               <div className="flex items-center gap-1">
                 <span className="material-symbols-outlined text-primary text-xl">
                   <Map/>
                 </span>
-                <span>{OFFER_DETAILS_DATA.address}</span>
+                <span>{offer.location}</span>
               </div>
               <span>•</span>
               <span className="flex items-center gap-1 text-amber-500 font-bold bg-amber-50 px-2 py-0.5 rounded-md">
                 <span className="material-symbols-outlined text-sm"><Star size={'15'}/></span>
-                {OFFER_DETAILS_DATA.rating} ({OFFER_DETAILS_DATA.reviews} {OFFER_DETAILS_TEXT.reviews})
+                {offer.avg_rating || 0} ({offer.reviews_count} {OFFER_DETAILS_TEXT.reviews})
               </span>
             </div>
           </div>
@@ -70,7 +94,7 @@ const OfferDetails = () => {
           </div>
         </div>
 
-        <Gallery images={OFFER_DETAILS_DATA.images} />
+        <Gallery images={offer.images ?? []} />
 
         {/* Two Column Layout */}
         <div className="flex flex-col lg:flex-row gap-12">
@@ -82,17 +106,11 @@ const OfferDetails = () => {
               <h3 className="text-2xl font-extrabold text-slate-900">
                 {OFFER_DETAILS_TEXT.about}
               </h3>
-              {OFFER_DETAILS_DATA.description.map((paragraph, index) => (
-                <p
-                  key={index}
-                  className="text-slate-600 text-base leading-[1.8] font-medium"
-                >
-                  {paragraph}
-                </p>
-              ))}
-              {/* <button className="text-primary font-bold text-right hover:underline w-max">
-                اقرأ المزيد
-              </button> */}
+              <p
+                className="text-slate-600 text-base leading-[1.8] font-medium"
+              >
+                {offer.description}
+              </p>
             </div>
 
             {/* Amenities */}
@@ -101,7 +119,7 @@ const OfferDetails = () => {
                 {OFFER_DETAILS_TEXT.amenities}
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-8">
-                {OFFER_DETAILS_DATA.amenities.map((amenity, index) => (
+                {offer.amenities.map((amenity, index) => (
                   <div
                     key={index}
                     className="flex items-center gap-4 text-slate-700 font-medium"
@@ -121,7 +139,7 @@ const OfferDetails = () => {
                 <h3 className="text-2xl font-extrabold text-slate-900">
                   {OFFER_DETAILS_TEXT.user_reviews}
                 </h3>
-                  { isLoading ? (
+                  { isAuthLoading ? (
                       <div className="h-[40px] w-[120px] animate-pulse rounded-full border border-white/40 bg-white/30"></div>
                   ) : user && user.role === "student" ? (
                   <button
@@ -134,38 +152,45 @@ const OfferDetails = () => {
                 }
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {OFFER_DETAILS_DATA.reviewsData.map((review, index) => (
-                  <div
-                    key={index}
-                    className="bg-white border border-slate-100 rounded-3xl p-6 flex flex-col gap-4 shadow-sm"
-                  >
-                    <div className="flex justify-between items-start">
-                      <div className="flex flex-col gap-1">
-                        <span className="font-bold text-slate-900">
-                          {review.author}
-                        </span>
-                        <span className="text-xs text-slate-400 font-medium">
-                          {review.date}
-                        </span>
-                      </div>
-                      <div className="flex text-amber-500">
-                        {[...Array(5)].map((_, i) => (
-                          <span
-                            key={i}
-                            className={`material-symbols-outlined text-sm ${
-                              i < review.rating ? "" : "text-slate-200"
-                            }`}
-                          >
-                            <StarIcon size={'15'}/>
+                {offer?.reviews?.length === 0 ? (
+                  <p className="text-slate-500 text-sm">
+                    {OFFER_DETAILS_TEXT.no_reviews}
+                  </p>
+                ) : (
+                  offer?.reviews?.map((review : any) => (
+                    <div
+                      key={review.id}
+                      className="bg-white border border-slate-100 rounded-3xl p-6 flex flex-col gap-4 shadow-sm"
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex flex-col gap-1">
+                          <span className="font-bold text-slate-900">
+                            {review.student_name}
                           </span>
-                        ))}
+                          <span className="text-xs text-slate-400 font-medium">
+                            {new Date(review.created_at).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <div className="flex text-amber-500">
+                          {[...Array(5)].map((_, i) => (
+                            <span
+                              key={i}
+                              className={`material-symbols-outlined text-sm ${
+                                i < review.rating ? "" : "text-slate-200"
+                              }`}
+                            >
+                              <StarIcon size={"15"} />
+                            </span>
+                          ))}
+                        </div>
                       </div>
+                      <p className="text-slate-600 text-sm leading-relaxed">
+                        {review.comment}
+                      </p>
                     </div>
-                    <p className="text-slate-600 text-sm leading-relaxed">
-                      {review.comment}
-                    </p>
-                  </div>
-                ))}
+                  ))
+                )}
+
               </div>
             </div>
           </div>
@@ -173,8 +198,8 @@ const OfferDetails = () => {
           {/* Right Column: Sticky Sidebar */}
           <div className="w-full lg:w-[400px]">
             <div className="sticky top-28 flex flex-col gap-6">
-              <BookingCard onBooking={handleBooking} />
-              <LandlordProfileCard />
+              <BookingCard onBooking={handleBooking} price={offer?.price} roomCount={offer?.rooms_count} />
+              <LandlordProfileCard email={offer?.landlord_email as string} name={offer?.landlord_name} />
             </div>
           </div>
         </div>
