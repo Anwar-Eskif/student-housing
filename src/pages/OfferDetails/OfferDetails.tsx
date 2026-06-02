@@ -4,7 +4,7 @@ import { useState } from "react";
 import Gallery from "./components/Gallery";
 import BookingCard from "./components/BookingCard";
 import LandlordProfileCard from "./components/LandlordProfileCard";
-import BookingConfirmationPopup from "./components/BookingConfirmationPopup";
+import BookingRequestPopup from "./components/BookingRequestPopup";
 import ReviewPopup from "./components/ReviewPopup";
 import OfferDetailsSkeleton from "./components/OfferDetailsSkeleton";
 // Icons
@@ -204,7 +204,7 @@ const OfferDetails = () => {
           </div>
         </div>
       </div>
-      {isPopupOpen && <BookingConfirmationPopup onClose={handleClosePopup} />}
+      {isPopupOpen && <BookingRequestPopup onClose={handleClosePopup} />}
       {isReviewPopupOpen && <ReviewPopup onClose={handleCloseReviewPopup} />}
     </main>
   );

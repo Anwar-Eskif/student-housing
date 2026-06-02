@@ -64,6 +64,18 @@ const BOOKING_CONFIRMATION_POPUP_TEXT = {
     ok_button: 'حسنًا'
 };
 
+const BOOKING_REQUEST_POPUP_TEXT = {
+    title: 'طلب زيارة',
+    description: 'اختر تاريخًا ووقتًا لزيارة العقار',
+    date_label: 'التاريخ',
+    time_label: 'الوقت',
+    cancel_button: 'إلغاء',
+    confirm_button: 'تأكيد الحجز',
+    alert_message: 'يرجى اختيار التاريخ والوقت',
+    time_expired: 'الوقت المحدد قد مضى يرجى اختيار وقت مستقبلي',
+    success_message: 'تم الحجز بنجاح!'
+};
+
 const LANDLORD_PROFILE_CARD_TEXT = {
     title: 'قابل المؤجر',
     name: 'سارة جنكينز',
@@ -259,4 +271,4 @@ const OFFER_DETAILS_DATA = {
   ],
 };
 
-export { NAV_LINKS, AUTH_TEXT, ERROR_MESSAGES, OFFERS_DATA , HOME_CARD_DATA, FEATURED_OFFERS_TEXT, HERO_SECTION_TEXT, HOME_CARD_TEXT, SEARCH_INPUT_TEXT, BOOKING_CARD_TEXT, BOOKING_CONFIRMATION_POPUP_TEXT, LANDLORD_PROFILE_CARD_TEXT, OFFER_DETAILS_DATA, OFFER_DETAILS_TEXT, REVIEW_POPUP_TEXT, FILTER_SIDEBAR_TEXT, OFFERS_PAGE_TEXT, OFFER_CARD_TEXT }
+export { NAV_LINKS, AUTH_TEXT, ERROR_MESSAGES, OFFERS_DATA , HOME_CARD_DATA, FEATURED_OFFERS_TEXT, HERO_SECTION_TEXT, HOME_CARD_TEXT, SEARCH_INPUT_TEXT, BOOKING_CARD_TEXT, BOOKING_CONFIRMATION_POPUP_TEXT, BOOKING_REQUEST_POPUP_TEXT, LANDLORD_PROFILE_CARD_TEXT, OFFER_DETAILS_DATA, OFFER_DETAILS_TEXT, REVIEW_POPUP_TEXT, FILTER_SIDEBAR_TEXT, OFFERS_PAGE_TEXT, OFFER_CARD_TEXT }
