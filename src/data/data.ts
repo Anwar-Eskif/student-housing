@@ -71,7 +71,7 @@ const BOOKING_REQUEST_POPUP_TEXT = {
     time_label: 'الوقت',
     cancel_button: 'إلغاء',
     confirm_button: 'تأكيد الحجز',
-    alert_message: 'يرجى اختيار التاريخ والوقت',
+    error_message: 'يرجى اختيار التاريخ والوقت',
     time_expired: 'الوقت المحدد قد مضى يرجى اختيار وقت مستقبلي',
     success_message: 'تم الحجز بنجاح!'
 };

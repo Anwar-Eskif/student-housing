@@ -81,3 +81,13 @@ export const updateOffer = async (offerId: number, offerData: FormData) : Promis
   });
   return response.data;
 }
+
+// booking
+export const createBooking = async (bookingData: {
+  offer_id: number,
+  visit_date: string,
+  visit_time: string
+}): Promise<any> => {
+  const response = await api.post('/bookings', bookingData);
+  return response.data;
+};

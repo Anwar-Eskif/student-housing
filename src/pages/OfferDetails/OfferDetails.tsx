@@ -204,7 +204,7 @@ const OfferDetails = () => {
           </div>
         </div>
       </div>
-      {isPopupOpen && <BookingRequestPopup onClose={handleClosePopup} />}
+      {isPopupOpen && <BookingRequestPopup offerId={offer?.id} onClose={handleClosePopup} />}
       {isReviewPopupOpen && <ReviewPopup onClose={handleCloseReviewPopup} />}
     </main>
   );
