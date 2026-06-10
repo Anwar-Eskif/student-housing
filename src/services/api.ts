@@ -84,6 +84,18 @@ export const updateOffer = async (offerId: number, offerData: FormData) : Promis
   return response.data;
 }
 
+export const getLandLordBookings = async (page: number = 1, limit: number = 10) : Promise<any> =>{
+  const response = await api.get('/bookings/landlord', {
+    params: { page, limit }
+  })
+  return response.data;
+}
+
+export const updateBookingStatus = async ({ bookingId, newStatus }: { bookingId: number, newStatus: "accepted" | "rejected" }) : Promise<any> => {
+  const response = await api.put(`/bookings/${bookingId}`,{ status: newStatus });
+  return response.data;
+};
+
 // BOOKING
 export const createBooking = async (bookingData: {
   offer_id: number,

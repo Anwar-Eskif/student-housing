@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Booking } from "../../../types/types";
 import { Calendar, Clock, MapPin, Wallet } from "lucide-react";
 import { formatTime12hr } from "../../../util/FormatTime12hr";
+import { MY_BOOKING_CARD_TEXT } from "../../../data/data";
 
 const BookingCard = ({ booking }: { booking: Booking }) => {
   const getStatusPillColor = (status: string) => {
@@ -16,6 +17,19 @@ const BookingCard = ({ booking }: { booking: Booking }) => {
         return "bg-gray-500";
     }
   };    
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case "pending":
+        return MY_BOOKING_CARD_TEXT.status.pending;
+      case "accepted":
+        return MY_BOOKING_CARD_TEXT.status.accepted;
+      case "rejected":
+        return MY_BOOKING_CARD_TEXT.status.rejected;
+      default:
+        return MY_BOOKING_CARD_TEXT.status.unknown;
+    }
+  };
 
   return (
     <Link to={`/offers/${booking.offer_id}`} className="block rounded-lg p-4 shadow-sm shadow-indigo-100">
@@ -38,7 +52,7 @@ const BookingCard = ({ booking }: { booking: Booking }) => {
           <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
             <Wallet className="h-4 w-4 text-indigo-600" />
             <div className="mt-1.5 sm:mt-0">
-              <p className="text-gray-500">السعر</p>
+              <p className="text-gray-500">{MY_BOOKING_CARD_TEXT.price_label}</p>
               <p className="font-medium">{booking.offer_price} $</p>
             </div>
           </div>
@@ -46,7 +60,7 @@ const BookingCard = ({ booking }: { booking: Booking }) => {
           <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
             <Calendar className="h-4 w-4 text-indigo-600" />
             <div className="mt-1.5 sm:mt-0">
-              <p className="text-gray-500">تاريخ الزيارة</p>
+              <p className="text-gray-500">{MY_BOOKING_CARD_TEXT.visit_date_label}</p>
               <p className="font-medium">{new Date(booking.visit_date).toLocaleDateString()}</p>
             </div>
           </div>
@@ -54,14 +68,14 @@ const BookingCard = ({ booking }: { booking: Booking }) => {
           <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
             <Clock className="h-4 w-4 text-indigo-600" />
             <div className="mt-1.5 sm:mt-0">
-                <p className="text-gray-500">وقت الزيارة</p>
+                <p className="text-gray-500">{MY_BOOKING_CARD_TEXT.visit_time_label}</p>
                 <p className="font-medium text-right" dir="ltr">{formatTime12hr(booking.visit_time)}</p>
             </div>
           </div>
         </div>
         <div className="mt-4">
           <span className={`inline-block rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 ${getStatusPillColor(booking.status)}`}>
-            {booking.status}
+            {getStatusLabel(booking.status)}
           </span>
         </div>
       </div>

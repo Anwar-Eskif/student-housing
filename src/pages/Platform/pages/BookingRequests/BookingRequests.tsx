@@ -1,34 +1,74 @@
+import { useState } from "react";
+// icons
 import { ChevronLeft, ChevronRight, Mail } from "lucide-react";
+// library
+import toast from "react-hot-toast";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
+// api
+import { getLandLordBookings, updateBookingStatus } from "../../../../services/api";
+// types
+import { BookingResponse } from "../../../../types/types";
+// utils
+import { formatTime12hr } from "../../../../util/FormatTime12hr";
+import axios from "axios";
+import { ERROR_MESSAGES } from "../../../../data/data";
 
-const bookingRequestsData = [
-  {
-    studentName: "أليس سميث",
-    propertyTitle: "  بالقرب من الحرم الجامعي",
-    date: "12 أكتوبر 2023",
-    email: "alice.smith@example.com",
-    status: "pending",
-  },
-  {
-    studentName: "بوب جونسون",
-    propertyTitle: "بالقرب من الحرم الجامعي",
-    date: "10 أكتوبر 2023",
-    email: "bob.johnson@example.com",
-    status: "approved",
-  },
-  {
-    studentName: "تشارلي براون",
-    propertyTitle: "بالقرب من الحرم الجامعي",
-    date: "08 أكتوبر 2023",
-    email: "charlie.brown@example.com",
-    status: "rejected",
-  },
-];
+
 
 const BookingRequests = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 10;
+  const queryClient = useQueryClient();
+
+
+  const { data, isLoading, isError } = useQuery<BookingResponse>({
+    queryKey: ['landlordBookings', currentPage],
+    queryFn: () => getLandLordBookings(currentPage, limit),
+  });
+
+
+  const { mutate, isPending, variables } = useMutation({
+    mutationFn: updateBookingStatus,
+    onSuccess: ()=>{
+      // Refetch the bookings after updating the status
+      queryClient.invalidateQueries({ queryKey: ['landlordBookings', currentPage] });
+      toast.success("تم تحديث حالة الطلب بنجاح");
+    },
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.message || ERROR_MESSAGES.server_error);
+      }
+    },
+
+  })
+
+  if (isLoading) {
+    return (
+      <div className="max-w-6xl py-6 mx-auto flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="max-w-6xl py-6 mx-auto text-center text-red-600 font-bold">
+        حدث خطأ أثناء تحميل طلبات الحجز. يرجى المحاولة مرة أخرى لاحقاً.
+      </div>
+    );
+  }
+
+  const handleUpdateStateRequest = (bookingId: number, newStatus: "accepted" | "rejected") => {
+    mutate({ bookingId, newStatus });
+  }
+
+  const { bookings, pagination } = data || { bookings: [], pagination: { totalPages: 1, hasNextPage: false, hasPrevPage: false, page: 1, limit: 10, total: 0 } };
+
   return (
     <div className="max-w-6xl py-6 mx-auto">
       <div className="flex justify-between items-center mb-6">
-                    <h1 className="font-headline text-3xl font-bold text-on-surface mb-2">  إدارة الحجوزات </h1>
+        <h1 className="font-headline text-3xl font-bold text-on-surface mb-2"> إدارة الحجوزات </h1>
       </div>
       <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
@@ -53,104 +93,110 @@ const BookingRequests = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200">
-              {bookingRequestsData.map((request, index) => (
-                <tr
-                  key={index}
-                  className="hover:bg-slate-50 transition-colors"
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm font-medium text-on-surface">
-                      {request.studentName}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-slate-700 font-medium">
-                      {request.propertyTitle}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-slate-500">
-                      {request.date}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center gap-2 text-sm text-slate-700">
-                      <Mail className="text-lg text-primary" />
-                      <span>{request.email}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                    {request.status === "pending" && (
-                      <div className="flex justify-end gap-2">
-                        <button className="inline-flex items-center justify-center px-3 py-1.5 border border-green-500 text-green-600 hover:bg-green-50 rounded-lg transition-colors text-xs font-bold">
-                          قبول
-                        </button>
-                        <button className="inline-flex items-center justify-center px-3 py-1.5 border border-red-500 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-xs font-bold">
-                          رفض
-                        </button>
+              {bookings.length > 0 ? (
+                bookings.map((request) => (
+                  <tr key={request.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="text-sm font-medium text-on-surface">
+                        {request.student_name}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="text-sm text-slate-700 font-medium">
+                        {request.offer_title}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="text-sm text-slate-500">
+                        {new Date(request.visit_date).toLocaleDateString('en-CA').replace(/-/g, '/')} - {formatTime12hr(request.visit_time)}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-2 text-sm text-slate-700">
+                        <Mail className="text-lg text-primary" />
+                        <span>{request.student_email}</span>
                       </div>
-                    )}
-                    {request.status === "approved" && (
-                      <span className="text-primary text-sm font-bold">
-                        مقبول
-                      </span>
-                    )}
-                    {request.status === "rejected" && (
-                      <span className="text-red-600 text-sm font-bold">
-                        مرفوض
-                      </span>
-                    )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                      {request.status === "pending" && (
+                        <div className="flex justify-end gap-2">
+                          {isPending && variables?.bookingId === request.id ? (
+                            <div className="flex justify-center w-full px-8">
+                              <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-primary"></div>
+                            </div>
+                          ) : (
+                            <>
+                              <button
+                                onClick={() => handleUpdateStateRequest(request.id, "accepted")}
+                                className="inline-flex items-center justify-center px-3 py-1.5 border border-green-500 text-green-600 hover:bg-green-50 rounded-lg transition-colors text-xs font-bold"
+                              >
+                                قبول
+                              </button>
+                              <button
+                                onClick={() => handleUpdateStateRequest(request.id, "rejected")}
+                                className="inline-flex items-center justify-center px-3 py-1.5 border border-red-500 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-xs font-bold"
+                              >
+                                رفض
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      )}
+                      {request.status === "accepted" && (
+                        <span className="text-primary text-sm font-bold">
+                          مقبول
+                        </span>
+                      )}
+                      {request.status === "rejected" && (
+                        <span className="text-red-600 text-sm font-bold">
+                          مرفوض
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="px-6 py-10 text-center text-slate-500">
+                    لا توجد طلبات حجز حالياً.
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
             <tfoot className="bg-slate-50 border-t border-slate-200">
               <tr>
                 <td className="px-6 py-3" colSpan={5}>
-                  <div className="flex items-center gap-2 justify-end">
-                    {/* <nav
-                      aria-label="Pagination"
-                      className="inline-flex gap-1.5 items-center"
-                    >
-                      <button className="relative inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors">
-                        <ArrowRightIcon size={20}/>
-                        <span>السابق</span>
-                      </button>
-                      <button
-                        aria-current="page"
-                        className="relative z-10 inline-flex items-center rounded-md bg-primary px-3 py-1 text-xs font-bold text-on-primary-container focus:z-20"
-                      >
-                        1
-                      </button>
-                      <button className="relative inline-flex items-center rounded-md border px-3 py-1 text-xs font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors">
-                        2
-                      </button>
-                      <button className="relative inline-flex items-center rounded-md border px-3 py-1 text-xs font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors">
-                        3
-                      </button>
-                      <span className="relative inline-flex items-center px-2 py-1 text-xs font-medium text-outline">
-                        ...
-                      </span>
-                      <button className="relative inline-flex items-center rounded-md border px-3 py-1 text-xs font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors">
-                        10
-                      </button>
-                      <button className="relative inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors">
-                        <span>التالي</span>
-                        <ArrowLeftIcon size={20}/>
-                      </button>
-                    </nav> */}
-                            <div className="flex justify-end mt-4">
+                  <div className="flex justify-end">
                     <div className="flex items-center gap-2">
-                        <button disabled>
+                      <button
+                        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                        disabled={!pagination.hasPrevPage}
+                        className="disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
                         <ChevronRight />
+                      </button>
+                      
+                      {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                          key={page}
+                          onClick={() => setCurrentPage(page)}
+                          className={`w-10 h-10 rounded-lg font-bold transition-colors ${
+                            currentPage === page
+                              ? "bg-primary-container text-on-primary-container"
+                              : "hover:bg-slate-200"
+                          }`}
+                        >
+                          {page}
                         </button>
-                        <button className="w-10 h-10 rounded-lg bg-primary-container text-on-primary-container font-bold">1</button>
-                        <button className="w-10 h-10 rounded-lg">2</button>
-                        <button className="w-10 h-10 rounded-lg">3</button>
-                        <button>
+                      ))}
+
+                      <button
+                        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, pagination.totalPages))}
+                        disabled={!pagination.hasNextPage}
+                        className="disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
                         <ChevronLeft />
-                        </button>
-                    </div>
+                      </button>
                     </div>
                   </div>
                 </td>
@@ -163,4 +209,4 @@ const BookingRequests = () => {
   );
 };
 
-export default BookingRequests
+export default BookingRequests;

@@ -62,6 +62,32 @@ export interface Booking {
   cover_image: string;
 }
 
+export interface LandlordBooking {
+  id: number;
+  status: "pending" | "accepted" | "rejected";
+  visit_date: string;
+  visit_time: string;
+  created_at: string;
+  offer_title: string;
+  offer_location: string;
+  student_name: string;
+  student_email: string;
+}
+
+export interface Pagination {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+}
+
+export interface BookingResponse {
+  bookings: LandlordBooking[];
+  pagination: Pagination;
+}
+
 export interface BookingCardProps {
   booking: Booking;
 }
