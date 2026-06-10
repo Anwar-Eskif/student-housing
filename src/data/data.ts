@@ -8,6 +8,7 @@ const NAV_LINKS = [
 const AUTH_TEXT = {
     student: 'طالب',
     landlord: 'مالك عقار',
+    my_bookings: 'حجوزاتي',
     student_description: 'كطالب، يمكنك البحث عن السكن المناسب.',
     landlord_description: 'كمالك عقار، يمكنك عرض عقارك وإدارته.',
     username: 'اسم المستخدم',

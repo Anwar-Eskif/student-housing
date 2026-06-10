@@ -14,6 +14,7 @@ import BookingRequests from "../pages/Platform/pages/BookingRequests/BookingRequ
 import MyOffers from "../pages/Platform/pages/MyOffers/MyOffers";
 import UpdateOffer from "../pages/Platform/pages/UpdateOffer/UpdateOffer";
 import AddOffer from "../pages/Platform/pages/AddOffer/AddOffer";
+import MyBookings from "../pages/MyBookings/MyBookings";
 
 const router = createBrowserRouter([
     {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
             {
                 path: 'offers/:id',
                 element: <OfferDetails />
+            },
+            {
+                path: 'my-bookings',
+                element: <MyBookings />
             },
             {
                 path: 'offer-images',

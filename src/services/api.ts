@@ -34,11 +34,6 @@ export const getUserDetails = async () : Promise<any> => {
   return response.data;
 }
 
-export const getlandLordOffers = async () : Promise<any> => {
-  const response = await api.get('/offers/landlord/my-offers')
-  return response.data;
-}
-
 export const getOffers = async (filters: any): Promise<any> => {
   const response = await api.get('/offers', {
     params: filters,
@@ -53,6 +48,13 @@ export const getLatestOffers = async (): Promise<any> => {
   const response = await api.get('/offers/latest');
   return response.data;
 };
+
+
+// CONTROLLPANEL  
+export const getlandLordOffers = async () : Promise<any> => {
+  const response = await api.get('/offers/landlord/my-offers')
+  return response.data;
+}
 
 export const addNewOffer = async (offerData: FormData) : Promise<any> => {
   const response = await api.post('/offers/create', offerData, {
@@ -82,7 +84,7 @@ export const updateOffer = async (offerId: number, offerData: FormData) : Promis
   return response.data;
 }
 
-// booking
+// BOOKING
 export const createBooking = async (bookingData: {
   offer_id: number,
   visit_date: string,
@@ -91,3 +93,8 @@ export const createBooking = async (bookingData: {
   const response = await api.post('/bookings', bookingData);
   return response.data;
 };
+
+export const getMyBookings = async () : Promise<any> => {
+  const response = await api.get(`/bookings/my`);
+  return response.data;
+}

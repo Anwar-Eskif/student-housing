@@ -48,3 +48,20 @@ export interface HomeCardProps {
   avg_rating: number | null;
   reviews_count: number,
 }
+
+export interface Booking {
+  id: number;
+  status: "pending" | "accepted" | "rejected";
+  visit_date: string;
+  visit_time: string;
+  created_at: string;
+  offer_id: number;
+  offer_title: string;
+  offer_location: string;
+  offer_price: string;
+  cover_image: string;
+}
+
+export interface BookingCardProps {
+  booking: Booking;
+}
