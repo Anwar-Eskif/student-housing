@@ -110,3 +110,9 @@ export const getMyBookings = async () : Promise<any> => {
   const response = await api.get(`/bookings/my`);
   return response.data;
 }
+
+// REVIEWS
+export const submitReview = async (offerId: number, reviewData: { rating: number, comment: string }) : Promise<any> => {
+  const response = await api.post(`/reviews/${offerId}`, reviewData);
+  return response.data;
+}

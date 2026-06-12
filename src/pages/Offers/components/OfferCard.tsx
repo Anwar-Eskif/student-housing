@@ -41,7 +41,7 @@ const OfferCard = ({
         <div className="flex justify-between items-center  mb-2">
           <h3 className="font-bold text-lg ">{title}</h3>
           <div className="flex items-center gap-1">
-            <span className="text-sm font-bold text-orange-300">{avg_rating?.toFixed(1) || 0}</span>
+            <span className="text-sm font-bold text-orange-300">{Math.round((avg_rating || 0) * 10) / 10 || 0}</span>
             <Star size={16} className="fill-current text-orange-300" />
           </div>
         </div>

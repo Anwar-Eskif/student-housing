@@ -76,7 +76,7 @@ const OfferDetails = () => {
               <span>•</span>
               <span className="flex items-center gap-1 text-amber-500 font-bold bg-amber-50 px-2 py-0.5 rounded-md">
                 <span className="material-symbols-outlined text-sm"><Star size={'15'}/></span>
-                {offer.avg_rating || 0} ({offer.reviews_count} {OFFER_DETAILS_TEXT.reviews})
+                {Math.round((offer.avg_rating || 0) * 10) / 10} ({(offer.reviews_count)} {OFFER_DETAILS_TEXT.reviews})
               </span>
             </div>
           </div>
@@ -168,7 +168,7 @@ const OfferDetails = () => {
                             {review.student_name}
                           </span>
                           <span className="text-xs text-slate-400 font-medium">
-                            {new Date(review.created_at).toLocaleDateString()}
+                            {new Date(review.created_at).toLocaleDateString('en-CA').replace(/-/g, '/')}
                           </span>
                         </div>
                         <div className="flex text-amber-500">
@@ -205,7 +205,7 @@ const OfferDetails = () => {
         </div>
       </div>
       {isPopupOpen && <BookingRequestPopup offerId={offer?.id} onClose={handleClosePopup} />}
-      {isReviewPopupOpen && <ReviewPopup onClose={handleCloseReviewPopup} />}
+      {isReviewPopupOpen && <ReviewPopup offerId={offer.id} onClose={handleCloseReviewPopup} />}
     </main>
   );
 };

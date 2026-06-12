@@ -21,7 +21,7 @@ const HomeCard = ({
                 <div className="p-6">
                     <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2 text-amber-500 font-bold text-sm bg-amber-50 px-2 py-0.5 rounded-md">
-                            <Star size={15} /> {avg_rating ? avg_rating.toFixed(1) : 0}
+                            <Star size={15} /> {avg_rating ? Math.round(avg_rating * 10) / 10 : 0}
                         </div>
                     </div>
                     <h3 className="text-xl font-bold text-slate-900 mb-4 line-clamp-1">{title}</h3>
