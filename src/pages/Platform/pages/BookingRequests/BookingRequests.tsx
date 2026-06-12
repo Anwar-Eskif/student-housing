@@ -18,7 +18,7 @@ import { ERROR_MESSAGES } from "../../../../data/data";
 
 const BookingRequests = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const limit = 10;
+  const limit = 5;
   const queryClient = useQueryClient();
 
 
@@ -165,8 +165,8 @@ const BookingRequests = () => {
             </tbody>
             <tfoot className="bg-slate-50 border-t border-slate-200">
               <tr>
-                <td className="px-6 py-3" colSpan={5}>
-                  <div className="flex justify-end">
+                <td className="px-6 py-3" colSpan={5} >
+                  <div className="flex justify-start">
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}

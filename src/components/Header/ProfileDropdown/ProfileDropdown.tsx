@@ -38,7 +38,7 @@ const ProfileDropdown = ({ children }:DropdownProps) => {
 
       {/* Dropdown Menu */}
       <div
-        className={`absolute right-0 z-10 mt-3 w-56 origin-top-right rounded-2xl border border-white/40 bg-white/20 shadow-[0_20px_50px_rgba(15,23,42,0.28)] ring-1 ring-white/30 focus:outline-none transition-all duration-300 ease-out ${isOpen
+        className={`absolute right-0 z-10 mt-3 w-56 origin-top-right rounded-2xl border border-white/40 bg-white/95 shadow-[0_20px_50px_rgba(15,23,42,0.28)] ring-1 ring-white/30 focus:outline-none transition-all duration-300 ease-out ${isOpen
           ? 'transform opacity-100 scale-100 visible'
           : 'transform opacity-0 scale-95 invisible -translate-y-1'
           }`}

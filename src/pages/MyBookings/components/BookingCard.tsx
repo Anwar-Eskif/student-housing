@@ -61,7 +61,7 @@ const BookingCard = ({ booking }: { booking: Booking }) => {
             <Calendar className="h-4 w-4 text-indigo-600" />
             <div className="mt-1.5 sm:mt-0">
               <p className="text-gray-500">{MY_BOOKING_CARD_TEXT.visit_date_label}</p>
-              <p className="font-medium">{new Date(booking.visit_date).toLocaleDateString()}</p>
+              <p className="font-medium">{new Date(booking.visit_date).toLocaleDateString('en-CA').replace(/-/g, '/')}</p>
             </div>
           </div>
 
