@@ -26,9 +26,9 @@ const HomeCard = ({
                     </div>
                     <h3 className="text-xl font-bold text-slate-900 mb-4 line-clamp-1">{title}</h3>
 
-                    <div className="flex flex-wrap gap-4 text-sm text-black font-medium border-t border-slate-50 pt-4">
+                    <div className="flex gap-4 text-sm text-black font-medium border-t border-slate-50 pt-4 overflow-x-auto no-scrollbar">
                         {amenities.map((amenity, idx) => (
-                            <div key={idx} className="flex p-2 rounded-xl items-center gap-1.5 bg-slate-300">
+                            <div key={idx} className="flex p-2 rounded-xl items-center gap-1.5 bg-slate-300 whitespace-nowrap">
                                 <span >{amenity}</span>
                             </div>
                         ))}

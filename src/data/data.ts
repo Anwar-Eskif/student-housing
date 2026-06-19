@@ -118,7 +118,8 @@ const FILTER_SIDEBAR_TEXT = {
     },
     gym: 'صالة رياضية',
     kitchen: 'يحتوي على مطبخ',
-    apply_filters: 'تطبيق الفلاتر'
+    apply_filters: 'تطبيق الفلاتر',
+    reset_filters: 'إعادة تعيين الفلاتر'
 };
 
 const OFFERS_PAGE_TEXT = {

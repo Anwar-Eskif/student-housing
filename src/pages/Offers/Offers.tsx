@@ -7,11 +7,20 @@ import { getOffers } from "../../services/api";
 import { useState, useEffect } from "react";
 import { Offer } from "../../types/types";
 import useDebounce from "../../hook/useDebounce";
+import { useSearchParams } from "react-router-dom";
 
 const Offers = () => {
+  const [searchParams] = useSearchParams();
+  const urlSearchTerm = searchParams.get('search') || '';
+
   const [filters, setFilters] = useState({});
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(urlSearchTerm);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  // Keep local search input synced if the URL search param changes
+  useEffect(() => {
+    setSearchTerm(urlSearchTerm);
+  }, [urlSearchTerm]);
 
   useEffect(() => {
     setFilters((prevFilters) => ({ ...prevFilters, location: debouncedSearchTerm }));
@@ -25,7 +34,8 @@ const Offers = () => {
   const isThereData = data && data.offers && data.offers.length > 0;
 
   const handleFilterChange = (newFilters: any) => {
-    setFilters(newFilters);
+    const updatedFilters = { ...filters, ...newFilters };
+    setFilters(updatedFilters);
   };
 
   return (

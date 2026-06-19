@@ -10,11 +10,23 @@ const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: any) => v
         initialValues: {
             minPrice: "",
             maxPrice: "",
-            amenities: [],
+            amenities: [] as string[],
         },
         onSubmit: (values) => {
             onFilterChange(values);
         },
+        onReset:()=>{
+            formik.setValues({
+                minPrice: "",
+                maxPrice: "",
+                amenities: [],
+            });
+            onFilterChange({
+                minPrice: "",
+                maxPrice: "",
+                amenities: [],
+            });
+        }
     });
 
     return (
@@ -25,7 +37,7 @@ const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: any) => v
                 </button>
             </div>
             <aside className={`w-full md:w-64 bg-slate-50 border-l border-slate-200 p-6 flex flex-col gap-6 sticky top-0 md:h-screen transition-all duration-300 ${isOpen ? 'h-fit' : 'h-0 p-0 m-0 hidden'} md:h-fit md:p-6 md:m-0`}>
-                <form className="flex flex-col gap-4" onSubmit={formik.handleSubmit}>
+                <form className="flex flex-col gap-4" onReset={formik.handleReset} onSubmit={formik.handleSubmit}>
                     <div className="flex flex-col gap-1 ">
                         <h2 className="text-lg font-bold text-teal-800">
                             {FILTER_SIDEBAR_TEXT.title}
@@ -78,6 +90,7 @@ const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: any) => v
                                         type="checkbox"
                                         name="amenities"
                                         value={FILTER_SIDEBAR_TEXT.amenities[amenityKey as keyof typeof FILTER_SIDEBAR_TEXT.amenities]}
+                                        checked={formik.values.amenities.includes(FILTER_SIDEBAR_TEXT.amenities[amenityKey as keyof typeof FILTER_SIDEBAR_TEXT.amenities])}
                                         onChange={formik.handleChange}
                                     />
                                     <span>{FILTER_SIDEBAR_TEXT.amenities[amenityKey as keyof typeof FILTER_SIDEBAR_TEXT.amenities]}</span>
@@ -88,6 +101,9 @@ const FilterSidebar = ({ onFilterChange }: { onFilterChange: (filters: any) => v
 
                     <button type="submit" className="mt-4 w-full text-white bg-primary text-on-primary py-3 rounded-xl font-bold hover:opacity-90 transition-all">
                         {FILTER_SIDEBAR_TEXT.apply_filters}
+                    </button>
+                    <button type="reset" className="mt-4 w-full text-white bg-red-500 py-3 rounded-xl font-bold hover:opacity-90 transition-all">
+                        {FILTER_SIDEBAR_TEXT.reset_filters}
                     </button>
                 </form>
             </aside>

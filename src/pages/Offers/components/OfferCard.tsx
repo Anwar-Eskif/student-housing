@@ -52,7 +52,7 @@ const OfferCard = ({
               <span>{location}</span>
           </div>
         </div>
-        <div className="flex gap-2  mb-4 overflow-x-auto no-scrollbar">
+        <div className="flex gap-2 mb-4 overflow-x-auto no-scrollbar">
           {amenities.map((amenity) => (
             <span
               key={amenity}
