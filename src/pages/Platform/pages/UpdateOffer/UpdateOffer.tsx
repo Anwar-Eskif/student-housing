@@ -17,6 +17,28 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getOfferDetails, updateOffer } from "../../../../services/api";
 
+const getEmbedUrl = (input: string): string => {
+  const trimmed = input.trim();
+  if (trimmed.startsWith("<iframe")) {
+    const match = trimmed.match(/src=["']([^"']+)["']/i);
+    return match ? match[1] : trimmed;
+  }
+  return trimmed;
+};
+
+const isValidMapUrl = (url: string): boolean => {
+  if (!url) return false;
+  try {
+    const parsed = new URL(url);
+    return (
+      (parsed.hostname.includes("google.com") || parsed.hostname.includes("google.co")) &&
+      parsed.pathname.includes("/maps")
+    );
+  } catch {
+    return false;
+  }
+};
+
 const validationSchema = Yup.object({
   title: Yup.string().required("العنوان مطلوب"),
   description: Yup.string().required("الوصف مطلوب"),
@@ -26,6 +48,7 @@ const validationSchema = Yup.object({
   amenities: Yup.array().of(Yup.string()),
   status: Yup.string().oneOf(["active", "inactive"]),
   images: Yup.array().min(1, "يجب تحميل صورة واحدة على الأقل"),
+  map_embed_url: Yup.string().required("رابط الخريطة مطلوب"),
 });
 
 const UpdateOffer = () => {
@@ -55,9 +78,10 @@ const UpdateOffer = () => {
       price: "",
       location: "",
       rooms_count: 1,
-      amenities: [],
+      amenities: [] as string[],
       status: "active",
-      images: [],
+      images: [] as (string | File)[],
+      map_embed_url: "",
     },
     validationSchema,
     onSubmit: (values) => {
@@ -69,6 +93,11 @@ const UpdateOffer = () => {
       formData.append("rooms_count", values.rooms_count.toString());
       formData.append("amenities", JSON.stringify(values.amenities));
       formData.append("status", values.status);
+      if (values.map_embed_url) {
+        formData.append("map_embed_url", getEmbedUrl(values.map_embed_url));
+      } else {
+        formData.append("map_embed_url", "");
+      }
       selectedImages.forEach((file) => {
         formData.append(`images`, file);
       });
@@ -94,6 +123,7 @@ const UpdateOffer = () => {
         amenities: offer.amenities || [],
         status: offer.status,
         images: offer.images || [],
+        map_embed_url: offer.map_embed_url || "",
       });
     }
   }, [offerData]);
@@ -311,6 +341,54 @@ const UpdateOffer = () => {
               />
               {formik.touched.location && formik.errors.location && (
                 <div className="text-red-500 text-sm mt-1">{formik.errors.location}</div>
+              )}
+            </div>
+            <div>
+              <label
+                htmlFor="map_embed_url"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                رابط تضمين الخريطة (Google Maps Embed Code / Link)
+              </label>
+              <textarea
+                id="map_embed_url"
+                rows={2}
+                placeholder='أدخل كود iframe المضمن أو رابط الخريطة المباشر (مثل: <iframe src="https://www.google.com/maps/embed..." ...></iframe>)'
+                className="w-full p-2 rounded-lg border-gray-300 bg-white text-gray-800 focus:border-teal-500 focus:ring-teal-500 shadow-sm"
+                {...formik.getFieldProps("map_embed_url")}
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                يمكنك الحصول على هذا الكود من خرائط Google عبر الضغط على "مشاركة" ثم "تضمين خريطة" ونسخ الكود.
+              </p>
+              {formik.touched.map_embed_url && formik.errors.map_embed_url && (
+                <div className="text-red-500 text-sm mt-1">{formik.errors.map_embed_url}</div>
+              )}
+              {formik.values.map_embed_url && (
+                (() => {
+                  const extractedUrl = getEmbedUrl(formik.values.map_embed_url);
+                  if (isValidMapUrl(extractedUrl)) {
+                    return (
+                      <div className="mt-4 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
+                        <iframe
+                          src={extractedUrl}
+                          width="100%"
+                          height="300"
+                          style={{ border: 0 }}
+                          allowFullScreen
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                          title="معاينة خريطة العقار"
+                        />
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div className="text-amber-600 text-sm mt-2 flex items-center gap-1">
+                        ⚠️ الرابط أو الكود المدخل غير صالح كخريطة Google Maps مضمنة. يرجى إدخال كود تضمين Google Maps بشكل صحيح.
+                      </div>
+                    );
+                  }
+                })()
               )}
             </div>
           </section>

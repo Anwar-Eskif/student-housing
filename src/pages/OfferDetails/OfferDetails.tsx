@@ -21,7 +21,7 @@ import { useParams } from "react-router-dom";
 
 const OfferDetails = () => {
   const { id } = useParams();
-  const { user,isLoading: isAuthLoading } = useAuth()
+  const { user, isLoading: isAuthLoading } = useAuth()
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isReviewPopupOpen, setIsReviewPopupOpen] = useState(false);
 
@@ -57,6 +57,8 @@ const OfferDetails = () => {
     return <div>Offer not found</div>;
   }
 
+  const embedUrl = offer.map_embed_url || "https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1609.6347296562046!2d37.113876272058555!3d36.208644937593164!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzbCsDEyJzMxLjEiTiAzN8KwMDYnNTMuMCJF!5e0!3m2!1sen!2s!4v1783003008764!5m2!1sen!2s";
+
   return (
     <main className="px-6 md:px-12 py-8 flex flex-1 justify-center pt-[30px] md:pt-[130px]" dir="rtl">
       <div className="layout-content-container flex flex-col max-w-[1200px] flex-1">
@@ -69,13 +71,13 @@ const OfferDetails = () => {
             <div className="flex items-center gap-3 text-slate-500 text-base font-medium">
               <div className="flex items-center gap-1">
                 <span className="material-symbols-outlined text-primary text-xl">
-                  <Map/>
+                  <Map />
                 </span>
                 <span>{offer.location}</span>
               </div>
               <span>•</span>
               <span className="flex items-center gap-1 text-amber-500 font-bold bg-amber-50 px-2 py-0.5 rounded-md">
-                <span className="material-symbols-outlined text-sm"><Star size={'15'}/></span>
+                <span className="material-symbols-outlined text-sm"><Star size={'15'} /></span>
                 {Math.round((offer.avg_rating || 0) * 10) / 10} ({(offer.reviews_count)} {OFFER_DETAILS_TEXT.reviews})
               </span>
             </div>
@@ -112,7 +114,18 @@ const OfferDetails = () => {
                 {offer.description}
               </p>
             </div>
-
+            {/* map */}
+            <div style={{ width: '100%', height: '450px' }}>
+              <iframe
+                src={embedUrl}  
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                title="موقعنا على الخريطة"
+              ></iframe>
+            </div>
             {/* Amenities */}
             <div className="flex flex-col gap-8 bg-slate-50 py-8 rounded-3xl border border-slate-100">
               <h3 className="text-2xl font-extrabold text-slate-900">
@@ -125,7 +138,7 @@ const OfferDetails = () => {
                     className="flex items-center gap-4 text-slate-700 font-medium"
                   >
                     <span className="material-symbols-outlined text-primary text-xl">
-                      <Check size={'20'}/>
+                      <Check size={'20'} />
                     </span>{" "}
                     {amenity}
                   </div>
@@ -139,16 +152,16 @@ const OfferDetails = () => {
                 <h3 className="text-2xl font-extrabold text-slate-900">
                   {OFFER_DETAILS_TEXT.user_reviews}
                 </h3>
-                  { isAuthLoading ? (
-                      <div className="h-[40px] w-[120px] animate-pulse rounded-full border border-white/40 bg-white/30"></div>
-                  ) : user && user.role === "student" ? (
+                {isAuthLoading ? (
+                  <div className="h-[40px] w-[120px] animate-pulse rounded-full border border-white/40 bg-white/30"></div>
+                ) : user && user.role === "student" ? (
                   <button
                     onClick={handleOpenReviewPopup}
                     className="px-5 py-2 rounded-2xl bg-primary text-white font-bold hover:bg-gray-900 transition cursor-pointer"
                   >
                     {OFFER_DETAILS_TEXT.add_review}
                   </button>
-                  ) : null
+                ) : null
                 }
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -157,7 +170,7 @@ const OfferDetails = () => {
                     {OFFER_DETAILS_TEXT.no_reviews}
                   </p>
                 ) : (
-                  offer?.reviews?.map((review : any) => (
+                  offer?.reviews?.map((review: any) => (
                     <div
                       key={review.id}
                       className="bg-white border border-slate-100 rounded-3xl p-6 flex flex-col gap-4 shadow-sm"
@@ -175,9 +188,8 @@ const OfferDetails = () => {
                           {[...Array(5)].map((_, i) => (
                             <span
                               key={i}
-                              className={`material-symbols-outlined text-sm ${
-                                i < review.rating ? "" : "text-slate-200"
-                              }`}
+                              className={`material-symbols-outlined text-sm ${i < review.rating ? "" : "text-slate-200"
+                                }`}
                             >
                               <StarIcon size={"15"} />
                             </span>

@@ -29,7 +29,8 @@ export interface Offer {
   avg_rating: number | null;
   reviews_count: number;
   images?: string[],
-  reviews?: []
+  reviews?: [],
+  map_embed_url?: string;
 }
 
 export interface HomeCardProps {
